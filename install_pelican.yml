@@ -78,7 +78,16 @@
       ansible.builtin.command: php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
       args:
         creates: /usr/local/bin/composer
-      notify: Run composer installer
+      register: composer_install_result
+
+    - name: Run composer installer
+      become: false
+      community.general.composer:
+        command: install
+        working_dir: "{{ pelican_dir }}"
+        no_dev: true
+        optimize_autoloader: true
+      when: composer_install_result.changed # noqa: no-handler
 
     # Webserver Configuration
 
@@ -103,7 +112,7 @@
         state: link
       notify: Restart_nginx
 
-    - name: Pun pelican environment setup
+    - name: Run pelican environment setup
       ansible.builtin.command: php artisan p:environment:setup --url="http://{{ domain_name }}" --no-interaction
       args:
         chdir: "{{ pelican_dir }}"
@@ -212,14 +221,6 @@
       ansible.builtin.service:
         name: nginx
         state: restarted
-
-    - name: Run composer installer
-      become: false
-      community.general.composer:
-        command: install
-        working_dir: "{{ pelican_dir }}"
-        no_dev: true
-        optimize_autoloader: true
 
     - name: Update grub
       ansible.builtin.command: update-grub

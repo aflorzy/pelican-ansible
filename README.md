@@ -1,6 +1,6 @@
 # All-In-One Pelican Game Panel Installation Playbook
 
-This playbook was created to automate the installation of Pelican so that it can be quickly and reliably deployed on game servers.
+This playbook was created to automate the installation of [Pelican](https://pelican.dev/) so that it can be quickly and reliably deployed on game servers.
 
  It was written with a host OS of Ubuntu in mind, so certain plays that use modules such as `apt` will not work on some servers.
 
@@ -15,7 +15,7 @@ Run `ansible-playbook install_pelican.yml`
 
 ## Post-Script Steps
 
-Visit your panel URL and click through the steps
+Visit your panel URL (http://pelican.lan/installer with the default config) and click through the steps. **Only default selections have been tested. Additional installation steps may be required to support a mysql connection**
 
 Follow steps in the [Configure step](https://pelican.dev/docs/wings/install#configure) of the Pelican documentation
 
